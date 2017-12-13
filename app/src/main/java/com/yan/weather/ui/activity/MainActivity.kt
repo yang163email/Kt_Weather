@@ -35,13 +35,12 @@ class MainActivity : AppCompatActivity() {
         forecast_list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
-
         requestData()
     }
 
     private fun requestData() {
+        val result = RequestForecastCommand("94043").execute()
         doAsync {
-            val result = RequestForecastCommand("94043").execute()
             uiThread {
                 forecast_list.adapter = ForecastListAdapter(result) {
                     toast(it.date)
