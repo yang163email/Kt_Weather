@@ -7,9 +7,7 @@ import com.yan.weather.R
 import com.yan.weather.domain.commands.RequestForecastCommand
 import com.yan.weather.ui.adapter.ForecastListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 
 /**
  *  @author      : 楠GG

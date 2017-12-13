@@ -11,7 +11,7 @@ import com.yan.weather.utils.DelegatesExt
 class WeatherApp : Application() {
 
     companion object {
-        private var instance: WeatherApp by DelegatesExt.notNullSingleValue()
+        var instance: WeatherApp by DelegatesExt.notNullSingleValue()
     }
 
     override fun onCreate() {
