@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  */
 class ForecastListAdapter(
         val weekForecast: ForecastList,
-        val itemClick: OnItemClickListener
+        val itemClick: (Forecast) -> Unit
         ) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -32,7 +32,7 @@ class ForecastListAdapter(
         return ViewHolder(itemView, itemClick)
     }
 
-    class ViewHolder(view: View, val itemClick: OnItemClickListener) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, val itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
 
         fun bindForecast(forecast: Forecast) {
             with(forecast) {
@@ -48,7 +48,4 @@ class ForecastListAdapter(
         }
     }
 
-    interface OnItemClickListener {
-        operator fun invoke(forecast: Forecast)
-    }
 }
