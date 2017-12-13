@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.yan.weather.R
+import com.yan.weather.domain.commands.RequestForecastCommand
 import com.yan.weather.ui.adapter.ForecastListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  *  @author      : 楠GG
@@ -30,7 +33,17 @@ class MainActivity : AppCompatActivity() {
 
         forecast_list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = ForecastListAdapter(items)
+        }
+
+        requestData()
+    }
+
+    private fun requestData() {
+        doAsync {
+            val result = RequestForecastCommand("94043").execute()
+            uiThread {
+                forecast_list.adapter = ForecastListAdapter(result)
+            }
         }
     }
 }
