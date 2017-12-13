@@ -36,5 +36,7 @@ dependencies {
     //recyclerview
     compile "com.android.support:recyclerview-v7:$support_version"
     //gson
-    compile 'com.google.code.gson:gson:2.8.2'
+    compile "com.google.code.gson:gson:$gson_version"
+    //picasso
+    compile "com.squareup.picasso:picasso:$picasso_version"
 }
