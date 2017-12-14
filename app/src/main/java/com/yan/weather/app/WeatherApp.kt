@@ -1,7 +1,7 @@
 package com.yan.weather.app
 
 import android.app.Application
-import com.yan.weather.utils.DelegatesExt
+import com.yan.weather.ext.DelegatesExt
 
 /**
  *  @author      : 楠GG

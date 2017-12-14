@@ -1,4 +1,4 @@
-package com.yan.weather.utils
+package com.yan.weather.ext
 
 import kotlin.reflect.KProperty
 
@@ -16,7 +16,7 @@ class NotNullSingleValueVar<T> {
     }
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        this.value = if (value == null) value
+        this.value = if (this.value == null) value
         else throw IllegalStateException("${property.name} already initialized")
     }
 }

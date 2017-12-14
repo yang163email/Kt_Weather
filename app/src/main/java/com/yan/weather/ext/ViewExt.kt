@@ -1,4 +1,4 @@
-package com.yan.weather.utils
+package com.yan.weather.ext
 
 import android.content.Context
 import android.view.View

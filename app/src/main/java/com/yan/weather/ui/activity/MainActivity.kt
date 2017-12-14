@@ -7,7 +7,9 @@ import com.yan.weather.R
 import com.yan.weather.domain.commands.RequestForecastCommand
 import com.yan.weather.ui.adapter.ForecastListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 /**
  *  @author      : 楠GG
@@ -30,18 +32,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        forecast_list.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-        }
+        forecast_list.layoutManager = LinearLayoutManager(this)
         requestData()
     }
 
     private fun requestData() {
-        val result = RequestForecastCommand("94043").execute()
         doAsync {
+            val result = RequestForecastCommand(94043).execute()
             uiThread {
                 forecast_list.adapter = ForecastListAdapter(result) {
-                    toast(it.date)
+                    toast(it.description)
                 }
             }
         }

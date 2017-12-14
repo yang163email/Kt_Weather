@@ -9,9 +9,9 @@ import com.yan.weather.net.ForecastRequest
  *  @date        : 2017/12/13 11:34
  *  @description : TODO
  */
-class RequestForecastCommand(private val zipCode: String) : Command<ForecastList> {
+class RequestForecastCommand(private val zipCode: Long) : Command<ForecastList> {
     override fun execute(): ForecastList {
         val request = ForecastRequest(zipCode)
-        return ForecastDataMapper().convertFromDataModel(request.execute())
+        return ForecastDataMapper().convertFromDataModel(zipCode, request.execute())
     }
 }

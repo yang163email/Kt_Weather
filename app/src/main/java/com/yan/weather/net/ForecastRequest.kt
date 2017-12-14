@@ -9,7 +9,7 @@ import java.net.URL
  *  @date        : 2017/12/13 11:06
  *  @description : TODO
  */
-class ForecastRequest(val zipCode: String) {
+class ForecastRequest(val zipCode: Long) {
     companion object {
         private val APP_ID = "15646a06818f61f7b8d7823ca833e1ce"
         private val URL = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=metric&cnt=7"

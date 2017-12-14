@@ -3,8 +3,6 @@ package com.yan.weather.domain.mappers
 import com.yan.weather.domain.model.ForecastList
 import com.yan.weather.module.Forecast
 import com.yan.weather.module.ForecastResult
-import java.text.DateFormat
-import java.util.*
 import com.yan.weather.domain.model.Forecast as ModelForecast
 
 /**
@@ -14,8 +12,8 @@ import com.yan.weather.domain.model.Forecast as ModelForecast
  */
 class ForecastDataMapper {
 
-    fun convertFromDataModel(forecast: ForecastResult): ForecastList {
-        return ForecastList(forecast.city.name, forecast.city.country,
+    fun convertFromDataModel(zipCode: Long, forecast: ForecastResult): ForecastList {
+        return ForecastList(zipCode, forecast.city.name, forecast.city.country,
                 convertForecastListToDomain(forecast.list))
     }
 
@@ -23,15 +21,10 @@ class ForecastDataMapper {
         return list.map { convertForecastItemToDomain(it) }
     }
 
-    private fun convertForecastItemToDomain(forecast: Forecast): ModelForecast {
-        return ModelForecast(convertData(forecast.dt), forecast.weather[0].description,
-                forecast.temp.max.toInt(), forecast.temp.min.toInt(),
-                generateIconUrl(forecast.weather[0].icon))
-    }
-
-    private fun convertData(data: Long): String {
-        val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
-        return df.format(data * 1000)
+    private fun convertForecastItemToDomain(forecast: Forecast) = with(forecast) {
+        ModelForecast(dt * 1000, weather[0].description,
+                temp.max.toInt(), temp.min.toInt(),
+                generateIconUrl(weather[0].icon))
     }
 
     private fun generateIconUrl(iconCode: String) =
