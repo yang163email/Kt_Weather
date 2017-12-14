@@ -10,8 +10,8 @@ import org.jetbrains.anko.db.*
  *  @date        : 2017/12/13 18:36
  *  @description : 天气数据库helper类
  */
-class ForecastDbHelper(ctx: Context = WeatherApp.instance) : ManagedSQLiteOpenHelper(
-        ctx, DB_NAME, null, 1){
+class ForecastDbHelper(ctx: Context = WeatherApp.instance) : ManagedSQLiteOpenHelper(ctx,
+        ForecastDbHelper.DB_NAME, null, ForecastDbHelper.DB_VERSION) {
 
     companion object {
         val DB_NAME = "forecast.db"
@@ -20,15 +20,12 @@ class ForecastDbHelper(ctx: Context = WeatherApp.instance) : ManagedSQLiteOpenHe
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        //创建两张表
-        db.createTable(CityForecastTable.NAME,
-                true,
+        db.createTable(CityForecastTable.NAME, true,
                 CityForecastTable.ID to INTEGER + PRIMARY_KEY,
                 CityForecastTable.CITY to TEXT,
                 CityForecastTable.COUNTRY to TEXT)
 
-        db.createTable(DayForecastTable.NAME,
-                true,
+        db.createTable(DayForecastTable.NAME, true,
                 DayForecastTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 DayForecastTable.DATE to INTEGER,
                 DayForecastTable.DESCRIPTION to TEXT,
@@ -43,5 +40,4 @@ class ForecastDbHelper(ctx: Context = WeatherApp.instance) : ManagedSQLiteOpenHe
         db.dropTable(DayForecastTable.NAME, true)
         onCreate(db)
     }
-
 }

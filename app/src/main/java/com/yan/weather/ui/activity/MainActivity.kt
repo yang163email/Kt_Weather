@@ -3,12 +3,16 @@ package com.yan.weather.ui.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar
 import com.yan.weather.R
 import com.yan.weather.domain.commands.RequestForecastCommand
+import com.yan.weather.ext.DelegatesExt
 import com.yan.weather.ui.adapter.ForecastListAdapter
+import com.yan.weather.utils.ToolbarManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.find
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
 /**
@@ -16,34 +20,36 @@ import org.jetbrains.anko.uiThread
  *  @date        : 2017/12/12 16:18
  *  @description : MainActivity
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ToolbarManager {
+    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
-    private val items = listOf(
-            "Mon 6/23 - Sunny - 31/17",
-            "Tue 6/24 - Foggy - 21/8",
-            "Wed 6/25 - Cloudy - 22/17",
-            "Thurs 6/26 - Rainy - 18/11",
-            "Fri 6/27 - Foggy - 21/10",
-            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-            "Sun 6/29 - Sunny - 20/7"
-    )
+    private val zipCode by DelegatesExt.preference(this,
+            SettingsActivity.ZIP_CODE, SettingsActivity.DEFAULT_ZIP)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initToolbar()
 
         forecast_list.layoutManager = LinearLayoutManager(this)
+        attachToScroll(forecast_list)
+    }
+
+    override fun onResume() {
+        super.onResume()
         requestData()
     }
 
-    private fun requestData() {
-        doAsync {
-            val result = RequestForecastCommand(94043).execute()
-            uiThread {
-                forecast_list.adapter = ForecastListAdapter(result) {
-                    toast(it.description)
-                }
+    private fun requestData() = doAsync {
+        val result = RequestForecastCommand(zipCode).execute()
+        uiThread {
+            val adapter = ForecastListAdapter(result) {
+                startActivity<DetailActivity>(
+                        DetailActivity.ID to it.id,
+                        DetailActivity.CITY_NAME to result.city)
             }
+            forecast_list.adapter = adapter
+            toolbarTitle = "${result.city} (${result.country})"
         }
     }
 }

@@ -9,9 +9,8 @@ import com.yan.weather.R
 import com.yan.weather.domain.model.Forecast
 import com.yan.weather.domain.model.ForecastList
 import com.yan.weather.ext.ctx
+import com.yan.weather.ext.toDateString
 import kotlinx.android.synthetic.main.item_forecast.view.*
-import java.text.DateFormat
-import java.util.*
 
 /**
  *  @author      : 楠GG
@@ -27,10 +26,10 @@ class ForecastListAdapter(
         holder.bindForecast(weekForecast[position])
     }
 
-    override fun getItemCount(): Int = weekForecast.size()
+    override fun getItemCount(): Int = weekForecast.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.ctx).inflate(R.layout.item_forecast, null)
+        val itemView = LayoutInflater.from(parent.ctx).inflate(R.layout.item_forecast, parent, false)
         return ViewHolder(itemView, itemClick)
     }
 
@@ -38,20 +37,15 @@ class ForecastListAdapter(
 
         fun bindForecast(forecast: Forecast) {
             with(forecast) {
-                itemView.apply {
+                with(itemView) {
                     Picasso.with(itemView.ctx).load(iconUrl).into(icon)
-                    tv_date.text = convertDate(date)
+                    tv_date.text = date.toDateString()
                     tv_description.text = description
                     maxTemperature.text = high.toString()
                     minTemperature.text = low.toString()
                     setOnClickListener { itemClick(forecast) }
                 }
             }
-        }
-
-        private fun convertDate(date: Long): String {
-            val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
-            return df.format(date * 1000)
         }
     }
 

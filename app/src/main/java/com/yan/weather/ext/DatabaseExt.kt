@@ -9,12 +9,12 @@ import org.jetbrains.anko.db.SelectQueryBuilder
  *  @date        : 2017/12/14 9:43
  *  @description : TODO
  */
-fun <T: Any> SelectQueryBuilder.parseList(parser: (Map<String, Any?>) -> T) =
+fun <T : Any> SelectQueryBuilder.parseList(parser: (Map<String, Any?>) -> T): List<T> =
         parseList(object : MapRowParser<T> {
             override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
         })
 
-fun <T: Any> SelectQueryBuilder.parseOpt(parser: (Map<String, Any?>) -> T) =
+fun <T : Any> SelectQueryBuilder.parseOpt(parser: (Map<String, Any?>) -> T): T? =
         parseOpt(object : MapRowParser<T> {
             override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
         })
@@ -22,3 +22,5 @@ fun <T: Any> SelectQueryBuilder.parseOpt(parser: (Map<String, Any?>) -> T) =
 fun SQLiteDatabase.clear(tableName: String) {
     execSQL("delete from $tableName")
 }
+
+fun SelectQueryBuilder.byId(id: Long) = whereSimple("_id = ?", id.toString())
