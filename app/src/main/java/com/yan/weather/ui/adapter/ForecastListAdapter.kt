@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.item_forecast.view.*
  *  @description : 天气RecyclerView的adapter
  */
 class ForecastListAdapter(
-        val weekForecast: ForecastList,
-        val itemClick: (Forecast) -> Unit
+        private val weekForecast: ForecastList,
+        private val itemClick: (Forecast) -> Unit
         ) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -33,7 +33,7 @@ class ForecastListAdapter(
         return ViewHolder(itemView, itemClick)
     }
 
-    class ViewHolder(view: View, val itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
 
         fun bindForecast(forecast: Forecast) {
             with(forecast) {
